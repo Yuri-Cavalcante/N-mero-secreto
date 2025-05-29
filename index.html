@@ -14,27 +14,32 @@
         <p>Você precisa descobrir um número entre 1 e 100 para vencer, a cada tentativa falha você perde 1 vida, se suas vidas chegarem a zero o jogo acaba,  </p>
     </header>
     <main id="container1">
-        <div id="container2">
+        <div id="registroNumeros"></div>
+        <div id="telaCentral">
             <h2>Está com sorte hoje ?</h2>
             <input type="number" name="" id="numeroChute">
             
             <button id="chutar" onclick="chutarNumero()">Chutar</button>
 
             <p id="pontosVida"></p>
-            <p id="mostrador">texto</p>
+            <p id="mostrador">...</p>
 
             <div id="speciais">
-                <button id="facaDG">Faca de dois gumes</button>
-                <button id="coringa">Coringa</button>
-                <button id="trevo">Trevo da incerteza</button>
+                <button id="facaDG" onclick="faca(this)">Faca de dois gumes</button>
+                <button id="coringa" onclick="coringa(this)">Coringa</button>
+                <button id="trevo" onclick="trevo(this)">Trevo da incerteza</button>
             </div>
+            
+        </div>
+        <div id="descricaoSpeciais">
+            <p></p>
         </div>
     </main>
     </div>
     <div id="alinhaGO">
         <div id="gameOver">
-            <h3>DERROTA</h1>
-            <button id="recomecar">Recomeçar</button>
+            <h3 id="mostradorTelaFinal">DERROTA</h1>
+            <button id="recomecar" onclick="recomeca()">Recomeçar</button>
         </div>
     </div>
     <script src="script.js"></script>
