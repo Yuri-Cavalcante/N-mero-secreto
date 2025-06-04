@@ -2,22 +2,10 @@
 let numeroGerado = parseInt(Math.random() * (101 - 1) + 1);
 console.log(numeroGerado);
 
-// UTILITÁRIOS
+// UTILITÁRIOS E TELAS DE VITORIA OU DERROTA
 const pegaElemento = (id) => document.getElementById(id);
 
 let condicaoVitoria = false;
-
-function verificaJogo() {
-    if (vidas <= 0) {
-        telaDerrota();
-        sombraTela();
-    } else {
-        if (condicaoVitoria == true) {
-            telaVitoria();
-            sombraTela();
-        }
-    }
-}
 
 function telaVitoria() {
     pegaElemento('gameOver').id = 'telaVitoria';
@@ -36,8 +24,44 @@ function recomeca() {
 }
 
 function sombraTela() {
-    const escurece =  pegaElemento('sombraTelaDeDerrota');
+    const escurece =  pegaElemento('sombraTelaDerrota');
     escurece.style.filter = 'brightness(0.5)';
+}
+
+function verificaJogo() {
+    if (vidas <= 0) {
+        telaDerrota();
+        sombraTela();
+    } else {
+        if (condicaoVitoria == true) {
+            telaVitoria();
+            sombraTela();
+        }
+    }
+}
+
+// RESGISTRO DE NUMEROS
+
+let container = pegaElemento('registroNumeros');
+let numerosChutados = [];
+
+function registroCriado(valor) {
+    numerosChutados.forEach((el, i) => {
+        el.style.top = `${(i + 1) * 40}px`;
+    });
+
+    const novoNumero = document.createElement('div');
+    novoNumero.id = 'numero';
+    novoNumero.style.top = '0px'
+    novoNumero.textContent = valor;
+
+    container.appendChild(novoNumero);
+    numerosChutados.unshift(novoNumero);
+}
+
+function registroRotativo(numero) {  
+    registro = numero;
+    registroCriado(registro);
 }
 
 // MOSTRADOR VIDA
@@ -87,7 +111,6 @@ function coringa(botao) {
             pegaElemento('mostrador').textContent = `Seu numero pode ser ${antecessor} ou ${numeroGerado}`
             break;
         default:
-            
             pegaElemento('pontosVida').textContent = `Vidas: ${vidas}`;
             pegaElemento('mostrador').textContent = ` Seu número pode ser ${antecessor}, ${numeroGerado} ou ${sucessor}`;   
     }
@@ -99,7 +122,7 @@ function coringa(botao) {
     console.log(antecessor);
     console.log(numeroGerado);
     console.log(sucessor);
-    
+
     botao.disabled = true;
 }
 
@@ -118,6 +141,23 @@ function trevo(botao) {
     
     botao.disabled = true
 }
+
+//DESCRIÇÃO HABILIDADES 
+
+const ids = ['facaDG', 'coringa', 'trevo'];
+const elementos = ids.map(id => pegaElemento(id));
+const descricao = pegaElemento('descricaoSpeciais');
+
+elementos.forEach(botao => {
+    botao.addEventListener('mouseover', () => {
+        descricao.textContent = botao.getAttribute('data-desc');
+    });
+
+    botao.addEventListener('mouseout', () => {
+        descricao.textContent = '...'
+    });
+
+})
 
 //CHUTAR NUMERO 
 
@@ -144,6 +184,7 @@ function chutarNumero () {
     }
 
     verificaJogo();
+    registroRotativo(numeroEntrada);
 }
 
 

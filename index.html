@@ -8,13 +8,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Tektur:wght@400..900&display=swap" rel="stylesheet">
 </head>
 <body> 
-    <div id="sombraTelaDeDerrota">
+    <div id="sombraTelaDerrota">
         <header>
-        <h1>Bem-vindo ao Jogo da adivinhação</h1>
+        <h1>Bem-vindo ao Número da Sorte</h1>
         <p>Você precisa descobrir um número entre 1 e 100 para vencer, a cada tentativa falha você perde 1 vida, se suas vidas chegarem a zero o jogo acaba,  </p>
     </header>
     <main id="container1">
-        <div id="registroNumeros"></div>
+        <div id="registroNumeros">
+            <h2>Números chutados</h2>
+        </div>
         <div id="telaCentral">
             <h2>Está com sorte hoje ?</h2>
             <input type="number" name="" id="numeroChute">
@@ -25,14 +27,15 @@
             <p id="mostrador">...</p>
 
             <div id="speciais">
-                <button id="facaDG" onclick="faca(this)">Faca de dois gumes</button>
-                <button id="coringa" onclick="coringa(this)">Coringa</button>
-                <button id="trevo" onclick="trevo(this)">Trevo da incerteza</button>
+                <button id="facaDG" data-desc="Perde 2 vidas, recebe uma dica onde está mais ou menos o número. Não esxiste almoço grátis, é o que dizem." 
+                onclick="faca(this)">Faca de dois gumes</button>
+
+                <button id="coringa" data-desc="Fica com 1 vida, recebe de 3 a 2 opções de número, um deles é o correto. Um grande sacrifício por um grande prémio." onclick="coringa(this)">Coringa</button>
+                
+                <button id="trevo" data-desc="Ganha 1 vida, mas tem 10% do número ser totalmente mudado. Até as melhoras podem falhar." onclick="trevo(this)">Trevo da incerteza</button>
             </div>
         </div>
-        <div id="descricaoSpeciais">
-            <p></p>
-        </div>
+        <div id="descricaoSpeciais"></div>
     </main>
     </div>
     <div id="alinhaGO">

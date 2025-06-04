@@ -56,8 +56,19 @@ main {
     background-color: black;
     color: white;
     border-radius: 10px;
-
+    position: relative;
+    overflow: auto;
 }
+
+#numero {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    transition: top 0.3s ease;
+}
+
+
 
 #telaCentral {
     display: flex;
@@ -77,6 +88,7 @@ main {
     background-color: black;
     color: white;
     border-radius: 10px;
+    font-family: "Pixelify Sans", sans-serif;
 }
 
 #speciais {
@@ -85,7 +97,7 @@ main {
     gap: 10px;
 }
 
-/* TELA DE DERROTA */
+/* TELA FINAL */
 
 #alinhaGO {
     display: flex;
