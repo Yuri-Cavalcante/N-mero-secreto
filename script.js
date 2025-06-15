@@ -1,6 +1,5 @@
 // GERADOR DE NÚMERO  
 let numeroGerado = parseInt(Math.random() * (101 - 1) + 1);
-console.log(numeroGerado);
 
 // UTILITÁRIOS E TELAS DE VITORIA OU DERROTA
 const pegaElemento = (id) => document.getElementById(id);
@@ -16,7 +15,9 @@ function telaVitoria() {
 
 function telaDerrota() {
     const tela = pegaElemento('gameOver');
-    tela.style.display = "flex";
+    tela.style.display = 'flex';
+    let numCerto = pegaElemento('numSecreto');
+    numCerto.textContent = `Número: ${numeroGerado}`;
 }
 
 function recomeca() {
@@ -24,7 +25,7 @@ function recomeca() {
 }
 
 function sombraTela() {
-    const escurece =  pegaElemento('sombraTelaDerrota');
+    const escurece =  pegaElemento('sombra');
     escurece.style.filter = 'brightness(0.5)';
 }
 
@@ -41,13 +42,12 @@ function verificaJogo() {
 }
 
 // RESGISTRO DE NUMEROS
-
-let container = pegaElemento('registroNumeros');
+let container = pegaElemento('numChutados');
 let numerosChutados = [];
 
 function registroCriado(valor) {
     numerosChutados.forEach((el, i) => {
-        el.style.top = `${(i + 1) * 40}px`;
+        el.style.top = `${(i + 1) * 25}px`;
     });
 
     const novoNumero = document.createElement('div');
@@ -61,17 +61,58 @@ function registroCriado(valor) {
 
 function registroRotativo(numero) {  
     registro = numero;
-    registroCriado(registro);
+
+    if (registro >= 1 && registro <= 100) {
+        registroCriado(registro);
+    }
 }
 
-// MOSTRADOR VIDA
+// MOSTRADOR DE VIDA E MODIFICADORES RELACIONADOS 
 let vidas = 7;
 pegaElemento('pontosVida').textContent = `Vidas: ${vidas}`;
 
+function animacaoVidaBaixa() {
+    let el = pegaElemento('pontosVida');
+    const cabeca = pegaElemento('cabeca');
+    const corpo  = pegaElemento('container1');
+    const rodape = pegaElemento('rodape');
+
+    switch(true) {
+        case vidas < 4 && vidas > 1:
+            el.className = 'animacaoVida1';
+            break;
+        case vidas == 1: 
+            el.className = 'animacaoVida2';
+            break;
+        default:
+            el.className = '';
+    }
+
+    switch(true) {
+        case vidas >= 6:
+            cabeca.style.backgroundColor = '#bcbcbc';
+            corpo.style.backgroundColor = 'gray';
+            rodape.style.backgroundColor = '#bcbcbc';
+            break;
+        case vidas < 6 && vidas > 3:
+            cabeca.style.backgroundColor = '#dcd69e';
+            corpo.style.backgroundColor = '#f3e653';
+            rodape.style.backgroundColor = '#dcd69e';
+            break;
+        case vidas < 4 && vidas > 1:
+            cabeca.style.backgroundColor = '#fb9745';
+            corpo.style.backgroundColor = '#f57309';
+            rodape.style.backgroundColor = '#fb9745';
+            break;
+        case vidas == 1:
+            cabeca.style.backgroundColor = '#f94949';
+            corpo.style.backgroundColor = '#e20808';
+            rodape.style.backgroundColor = '#f94949';
+            break; 
+    }
+}
+
 //HABILIDADES 
-
-let pontos = 1000 
-
 function faca(botao) {
     let antecessor = numeroGerado - 15;
     if (antecessor  <= 0) {
@@ -83,15 +124,16 @@ function faca(botao) {
     }
 
     numeroGerado = parseInt(Math.random() * (sucessor - antecessor) + antecessor);
-    console.log(antecessor);
-    console.log(sucessor);
-    console.log(numeroGerado);
 
     vidas -= 2;
     pegaElemento('pontosVida').textContent = `Vidas: ${vidas}`;
     pegaElemento('mostrador').textContent = ` Seu número está entre ${antecessor} e ${sucessor}`;
+
+    animacaoVidaBaixa();
     verificaJogo();
-    botao.disabled = true;
+    
+    botao.id = 'botaoOff';
+    botao.onclick = null;
 }
 
 function coringa(botao) {
@@ -104,26 +146,25 @@ function coringa(botao) {
     switch(true) {
         case numeroGerado == 1:
             pegaElemento('pontosVida').textContent = `Vidas: ${vidas}`;
-            pegaElemento('mostrador').textContent = `Seu numero pode ser ${numeroGerado} ou ${sucessor}`
+            pegaElemento('mostrador').textContent = `Seu numero pode ser ${numeroGerado} ou ${sucessor}.`
             break;
         case numeroGerado == 100:
             pegaElemento('pontosVida').textContent = `Vidas: ${vidas}`;
-            pegaElemento('mostrador').textContent = `Seu numero pode ser ${antecessor} ou ${numeroGerado}`
+            pegaElemento('mostrador').textContent = `Seu numero pode ser ${antecessor} ou ${numeroGerado}.`
             break;
         default:
             pegaElemento('pontosVida').textContent = `Vidas: ${vidas}`;
-            pegaElemento('mostrador').textContent = ` Seu número pode ser ${antecessor}, ${numeroGerado} ou ${sucessor}`;   
+            pegaElemento('mostrador').textContent = `Seu número pode ser ${antecessor}, ${numeroGerado} ou ${sucessor}.`;   
     }
 
     let opcoes = [antecessor, numeroGerado, sucessor];
 
     numeroGerado = opcoes[Math.floor(Math.random() * opcoes.length)];
 
-    console.log(antecessor);
-    console.log(numeroGerado);
-    console.log(sucessor);
-
-    botao.disabled = true;
+    animacaoVidaBaixa();
+    
+    botao.id = 'botaoOff';
+    botao.onclick = null;
 }
 
 function trevo(botao) {
@@ -131,29 +172,34 @@ function trevo(botao) {
 
     vidas += 1;
 
-    pegaElemento('pontosVida').textContent = vidas;
+    pegaElemento('pontosVida').textContent = `Vidas: ${vidas}`;
 
-    if (Math.random() < 0.1) {
+    if (Math.random() < 0.2) {
         numeroGerado = parseInt(Math.random() * (101 - 1) + 1);
         pegaElemento('mostrador').textContent = 'O número mudou, mas que azar.'
-        console.log(numeroGerado);    
     }
+
+    animacaoVidaBaixa();
     
-    botao.disabled = true
+    botao.id = 'botaoOff';
+    botao.onclick = null;
 }
 
 //DESCRIÇÃO HABILIDADES 
 
-const ids = ['facaDG', 'coringa', 'trevo'];
-const elementos = ids.map(id => pegaElemento(id));
-const descricao = pegaElemento('descricaoSpeciais');
+const idsSkills = ['facaDG', 'coringa', 'trevo'];
+const elementos = idsSkills.map(id => pegaElemento(id));
+const titulo = pegaElemento('titulo');
+const descricao = pegaElemento('desc');
 
 elementos.forEach(botao => {
     botao.addEventListener('mouseover', () => {
+        titulo.textContent = botao.getAttribute('data-titulo');
         descricao.textContent = botao.getAttribute('data-desc');
     });
 
     botao.addEventListener('mouseout', () => {
+        titulo.textContent = ''
         descricao.textContent = '...'
     });
 
@@ -172,17 +218,19 @@ function chutarNumero () {
         case numeroEntrada < numeroGerado && numeroEntrada <= 100 && numeroEntrada >= 1:
             pegaElemento('mostrador').textContent = 'Você errou, o número é maior.'
             vidas--;
-            pegaElemento('pontosVida').textContent = vidas;
+            pegaElemento('pontosVida').textContent = `Vidas: ${vidas}`;
             break;
         case numeroEntrada > numeroGerado && numeroEntrada <= 100 && numeroEntrada >= 1:
             pegaElemento('mostrador').textContent = 'Você errou, o número é menor.'
             vidas--;
-            pegaElemento('pontosVida').textContent = vidas;
+            pegaElemento('pontosVida').textContent = `Vidas: ${vidas}`;
             break;
         default:
             alert('o numero não pode ser negativo ou o campo estar vazio, e deve ser entre 1 e 100!');
     }
 
+    pegaElemento('numeroChute').value = '';
+    animacaoVidaBaixa();
     verificaJogo();
     registroRotativo(numeroEntrada);
 }
